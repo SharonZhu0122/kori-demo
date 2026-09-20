@@ -1,0 +1,493 @@
+/* ============================================================
+   KORI — Move with Mana
+
+   Soft-UI, built around one surface colour. Depth comes only from
+   paired light/dark shadows, never from borders.
+
+   Two rules drive the sizing. The reader is a kaumatua two or three
+   metres back from the screen, so nothing that matters is under 20px.
+   And during a session the guide and the player's own picture get
+   almost the whole screen — every other element is a thin strip.
+   ============================================================ */
+
+:root{
+    /* Rauawaawa blue. Pink is reserved for the three things that must be
+       found first — Start, the score, and Go Again — via --hero; everything
+       else that used to be the accent is now the near-white --accent (the
+       colour of the activity names). The koru/poutama use --decor (aqua). */
+    --bg:            #10428A;
+    --bg-glow:       #2E63B0;
+    --shadow-dark:   #0B315F;
+    --shadow-light:  #2A5EA8;
+
+    --screen-bg:           #F2F6FC;
+    --screen-shadow-dark:  #D3E0F0;
+    --screen-shadow-light: #FFFFFF;
+
+    --accent:      #F1F6FF;                   /* secondary — near-white */
+    --accent-deep: #0B315F;                   /* dark, for text on light pills */
+    --accent-soft: rgba(200,220,255,0.30);    /* soft neutral glow */
+    --hero:        #F27BA6;                    /* pink — ONLY Start, score, Go Again */
+    --hero-soft:   rgba(242,123,166,0.42);     /* pink glow for the score */
+    --decor:       #2FCFD6;                    /* aqua koru + poutama */
+    --warm:        #FFC24D;
+    --hard:        #FF7E6B;                    /* coral — Hard difficulty pill only */
+
+    --text-primary: #F1F6FF;
+    --text-muted:   #AEC6E6;
+    --ink:          #0B315F;
+
+    --radius-lg: 30px;
+    --radius-md: 22px;
+    --radius-sm: 14px;
+
+    --font-display: 'Outfit', 'Segoe UI', sans-serif;
+    --font-body:    'Inter', 'Segoe UI', sans-serif;
+}
+
+*{ margin:0; padding:0; box-sizing:border-box; font-family: var(--font-body); }
+
+body{
+    background:
+        radial-gradient(circle at 20% 10%, var(--bg-glow), transparent 48%),
+        radial-gradient(circle at 86% 92%, var(--bg-glow), transparent 44%),
+        var(--bg);
+    background-attachment: fixed;
+    min-height:100vh;
+    color: var(--text-primary);
+    overflow-x:hidden;
+}
+
+.container{ max-width:1700px; margin:auto; padding:20px 24px; }
+.center{ text-align:center; }
+
+h1{
+    text-align:center;
+    font-family: var(--font-display);
+    font-weight:800; font-size:clamp(64px, 11vw, 132px); letter-spacing:6px;
+    line-height:1;
+    color: var(--text-primary);
+    text-shadow: 0 0 60px var(--accent-soft);
+}
+
+h2{
+    text-align:center; margin-bottom:30px;
+    font-family: var(--font-display); font-weight:700; font-size:clamp(32px, 4vw, 46px);
+}
+
+/* ---------- buttons ---------- */
+
+button{
+    -webkit-appearance:none; appearance:none; border:none;
+    font-family: var(--font-body); font-weight:600; font-size:20px;
+    color: var(--text-primary);
+    background: var(--bg); border-radius: var(--radius-md);
+    padding:16px 32px; margin:9px; cursor:pointer;
+    box-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
+    transition: box-shadow .25s ease, transform .2s ease, color .2s ease;
+}
+button:hover{
+    color: var(--accent); transform: translateY(-2px);
+    box-shadow: 11px 11px 24px var(--shadow-dark), -11px -11px 24px var(--shadow-light);
+}
+button:active{
+    transform: translateY(1px);
+    box-shadow: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light);
+}
+.btn-quiet{ font-size:18px; color: var(--text-muted); }
+
+/* The one thing on the home screen anyone has to find. */
+.big-start{
+    font-family: var(--font-display); font-weight:800;
+    font-size:clamp(34px, 4.4vw, 52px); letter-spacing:1px;
+    color: var(--hero);
+    padding:26px 96px; border-radius:44px; margin:14px;
+}
+
+/* ---------- koru + poutama decoration ---------- */
+
+.decor{ position:absolute; inset:0; pointer-events:none; overflow:hidden; z-index:0; }
+.koru{
+    position:absolute; width:min(46vw, 620px); height:min(46vw, 620px);
+    color: var(--decor); opacity:.12;
+}
+.koru--tl{ top:-8%;  left:-10%; }
+.koru--br{ bottom:-8%; right:-10%; }
+.poutama{
+    position:absolute; left:0; width:100%; height:110px;
+    color: var(--decor); opacity:.09;
+}
+.poutama--top{ top:0; }
+.poutama--bottom{ bottom:0; transform:scaleY(-1); }
+
+/* ---------- home ---------- */
+
+#homePage, #endPage{ position:relative; min-height:calc(100vh - 40px); }
+.home-inner, .end-inner{
+    position:relative; z-index:1; text-align:center;
+    min-height:calc(100vh - 60px);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+}
+/* The summary has to land inside one screen: a "Go Again" that needs
+   scrolling to reach is a "Go Again" nobody presses. */
+.end-inner{ padding-top:0; }
+.end-inner h2{ margin-bottom:6px; }
+.end-inner .big-start{ padding:18px 66px; margin:8px; font-size:clamp(30px,3.6vw,42px); }
+.end-inner .btn-quiet{ margin-top:0; }
+.tagline{
+    font-size:16px; font-weight:600; letter-spacing:5px; text-transform:uppercase;
+    color: var(--text-muted);
+    padding:13px 30px; border-radius:999px; background: var(--bg); margin-top:14px;
+    box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light);
+}
+/* Home and summary show the character himself, taken from the footage,
+   so the face on the front page is the face that leads the dance. The
+   breathing is CSS: nothing is drawn per frame for these two. */
+.home-figure, .end-figure{
+    display:block; object-fit:contain; width:auto;
+    /* The figure is now an animated webp (waving / cheering), so it moves on
+       its own — no CSS breathing on top, which would double the motion. */
+}
+.home-figure{ height:min(34vh, 300px); margin:2px 0; }
+
+@keyframes kori-breathe{
+    0%,100%{ transform:translateY(0)    scale(1); }
+    50%    { transform:translateY(-7px) scale(1.015); }
+}
+@media (prefers-reduced-motion: reduce){
+    .home-figure, .end-figure{ animation:none; }
+}
+
+/* ---------- how to play ---------- */
+
+.howto-list{ max-width:820px; margin:0 auto 22px; }
+.howto-step{
+    display:flex; gap:22px; align-items:flex-start;
+    background: var(--bg); border-radius: var(--radius-md);
+    padding:22px 26px; margin-bottom:16px;
+    box-shadow: 7px 7px 15px var(--shadow-dark), -7px -7px 15px var(--shadow-light);
+}
+.howto-num{
+    flex:0 0 54px; height:54px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family: var(--font-display); font-weight:700; font-size:25px; color: var(--accent);
+    background: var(--bg);
+    box-shadow: inset 4px 4px 9px var(--shadow-dark), inset -4px -4px 9px var(--shadow-light);
+}
+.howto-text strong{ display:block; font-size:23px; margin-bottom:5px; }
+.howto-text p{ font-size:18px; line-height:1.5; color: var(--text-muted); }
+
+/* Heavier weights throughout — easier for older eyes to read at a glance. */
+body{ font-weight:600; }
+h1, h2, .big-start, .mode-card .mode-name, .end-mana-value, #moveName,
+.top-btn, .btn-quiet, .mode-card .mode-time, .howto-num, .clock{ font-weight:800; }
+
+/* Content on the home, choose-activity and summary screens sits in the
+   vertical centre of the screen. */
+.mode-inner{
+    min-height:calc(100vh - 60px);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+}
+
+/* ---------- choose an activity ---------- */
+
+.mode-grid{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));
+    gap:28px; max-width:1000px; margin:0 auto 26px;
+}
+.mode-card{
+    margin:0; padding:38px 24px 30px; border-radius:32px;
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+}
+.mode-icon{ font-size:52px; line-height:1; }
+.mode-card .mode-name{
+    font-family: var(--font-display); font-weight:700;
+    font-size:clamp(26px, 2.6vw, 34px); text-align:center;
+}
+.mode-card .mode-time{
+    font-family: var(--font-display); font-weight:700; font-size:22px;
+    color: var(--accent);
+    padding:8px 22px; border-radius:999px; background: var(--bg);
+    box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
+}
+/* Difficulty on each activity card. The te reo word leads (Māmā / Waenga /
+   Uaua), the English sits under it small, and three dots show the level so
+   it reads at a glance even for someone not reading the words. Colours are
+   the familiar traffic-light run: easy aqua, medium amber, hard coral. */
+.mode-diff{
+    font-family: var(--font-display); font-weight:800; font-size:20px;
+    padding:8px 22px; border-radius:999px;
+    display:inline-flex; align-items:center; gap:10px;
+}
+.mode-diff.easy{   background: var(--decor); color:#043A3D; }
+.mode-diff.medium{ background: var(--warm);  color:#5A3A00; }
+.mode-diff.hard{   background: var(--hard);  color:#4A160D; }
+.mode-diff .lvl{ display:inline-flex; gap:4px; }
+.mode-diff .lvl i{ width:8px; height:8px; border-radius:50%; background:currentColor; opacity:.28; }
+.mode-diff .lvl i.on{ opacity:1; }
+.mode-diff-en{ font-size:14px; font-weight:700; color: var(--text-muted); margin-top:-4px; }
+
+/* ============================================================
+   The session
+   ============================================================ */
+
+.top-bar{ display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+.top-bar .spacer{ flex:1; }
+.top-btn{ font-size:17px; padding:11px 20px; margin:0; border-radius:16px; }
+/* Pause has to stand out from the other top-bar buttons — an older player
+   should spot it at a glance, so it is filled amber with larger text, not
+   the same colour as the page. (Pink stays reserved for Start, score and
+   Go Again.) */
+#pauseBtn{
+    background: var(--warm); color: #5A3A00;
+    font-size: 20px; font-weight: 800; padding: 12px 26px;
+    box-shadow: 6px 6px 13px var(--shadow-dark), -3px -3px 9px var(--shadow-light);
+}
+#pauseBtn:hover{ color: #5A3A00; background: var(--warm); }
+.clock{
+    font-family: var(--font-display); font-variant-numeric: tabular-nums;
+    font-size:24px; font-weight:700; color: var(--text-muted); margin-left:8px;
+}
+
+.progress-track{
+    height:12px; border-radius:999px; background: var(--bg); overflow:hidden; margin-bottom:12px;
+    box-shadow: inset 4px 4px 9px var(--shadow-dark), inset -4px -4px 9px var(--shadow-light);
+}
+.progress-fill{
+    height:100%; width:0%; border-radius:999px;
+    background: linear-gradient(90deg, #FFFFFF, var(--accent));
+    box-shadow: 0 0 16px var(--accent-soft); transition: width .25s linear;
+}
+
+.stage{
+    /* Two equal squares, side by side, as large as the window allows. Both
+       are the guide clip's shape (1:1); the camera is given the same square
+       rather than its own 4:3, because the two being the SAME SIZE matters
+       more than the camera keeping its native shape. Its 4:3 picture is
+       object-fit:cover inside the square, and reserve() sizes the crop from
+       the torso with a full arm span held inside it, so nothing the player
+       reaches for leaves the square. */
+    --panel-aspect: 1;
+    --panel-w: min(calc((100vw - 72px) / 2), calc((100vh - 250px) * var(--panel-aspect)), 760px);
+    display:grid; grid-template-columns: var(--panel-w) var(--panel-w);
+    justify-content:center; align-items:center; gap:20px;
+}
+.stage-col{ display:flex; flex-direction:column; min-width:0; }
+
+/* The instruction sits directly above the thing it describes, in the
+   largest type on the screen. It used to live in a box below the panels,
+   which both stole height from the two things that matter and put the
+   words a long way from the picture they belong to. */
+/* The heading spans the row now instead of sitting inside the guide
+   column: with a portrait guide that column is only a few hundred pixels
+   wide, and the largest type on the screen will not fit in it. */
+.move-head{ min-height:96px; padding:2px 6px 10px; }
+#moveName{
+    font-family: var(--font-display); font-weight:800;
+    font-size:clamp(30px, 3.4vw, 48px); line-height:1.08; margin-bottom:4px;
+}
+#moveName .cn{ font-size:.62em; color: var(--text-muted); margin-left:12px; font-weight:500; }
+#moveName .hold-tag{
+    display:inline-block; margin-left:14px; vertical-align:middle;
+    font-family: var(--font-body); font-size:15px; font-weight:700;
+    letter-spacing:2px; text-transform:uppercase; color: var(--ink);
+    background: var(--warm); padding:5px 13px; border-radius:999px;
+}
+#moveCue{ font-size:clamp(18px, 1.7vw, 24px); color: var(--text-muted); line-height:1.3; }
+
+.panel{
+    position:relative; border-radius: var(--radius-lg); overflow:hidden;
+    background: var(--screen-bg);
+    width:100%; aspect-ratio: var(--panel-aspect); height:auto;
+    box-shadow: inset 9px 9px 20px var(--screen-shadow-dark), inset -9px -9px 20px var(--screen-shadow-light);
+}
+
+/* The camera keeps its OWN shape rather than the guide's. Forcing it into
+   a square cropped a quarter of its width away, and that quarter is
+   exactly where a player's hands go when they open their arms right out —
+   the fully extended positions left the picture. Same width as the guide,
+   so the two are still halves; its own height, so nothing is thrown away. */
+#camPanel{ aspect-ratio: var(--panel-aspect); }   /* same square as the guide */
+
+#avatarStage{ width:100%; height:100%; display:flex; align-items:center; justify-content:center; }
+/* contain, not cover: the panel is given the clip's own shape, so the two
+   agree and nothing is letterboxed — but if a mode is ever added whose
+   declared shape is slightly off, a guide that is letterboxed is honest
+   and a guide that is cropped is not. What is shown is what is scored. */
+#guideVideo{ width:100%; height:100%; object-fit:contain; display:none; }
+
+
+.cam-label{
+    position:absolute; top:12px; left:14px; z-index:5;
+    font-family: var(--font-display); font-weight:700; font-size:14px;
+    letter-spacing:2px; text-transform:uppercase; color:var(--accent-deep);
+    background:rgba(255,255,255,.72); padding:5px 12px; border-radius:999px;
+}
+
+/* The camera is framed on the player, not on their room: the wrapper is
+   what gets scaled and shifted, so the skeleton overlay moves with it. */
+.cam-frame{
+    position:absolute; inset:0;
+    transform-origin:50% 50%;
+    will-change: transform;
+}
+#camera{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+/* cover, matching the video exactly. The canvas is sized to the camera's
+   own pixels, so stretching it to the panel would only agree with the
+   video while the panel happened to be the camera's shape — which stopped
+   being true when the panels became halves. object-fit makes the two crop
+   identically whatever shape the panel is. */
+#skeleton{ position:absolute; inset:0; width:100%; height:100%;
+           object-fit:cover; pointer-events:none; }
+.cam-frame{ transform: scaleX(-1); }      /* replaced at runtime by the framing */
+
+/* live match, small, in the corner of the player's own picture */
+.match-pill{
+    position:absolute; top:14px; right:14px; z-index:6;
+    font-family: var(--font-display); font-weight:800; font-size:26px;
+    font-variant-numeric: tabular-nums;
+    color: var(--accent-deep); background:rgba(255,255,255,.85);
+    padding:8px 18px; border-radius:999px;
+    box-shadow:0 4px 14px rgba(11,49,95,.2);
+    transition: color .3s ease;
+}
+.match-pill.good{ color:#0E8AA0; }
+
+/* encouragement, over the player's picture, gone again in a moment */
+.praise{
+    position:absolute; left:50%; bottom:16%; z-index:6;
+    transform:translate(-50%, 14px);
+    font-family: var(--font-display); font-weight:800; font-size:clamp(22px, 2.3vw, 32px);
+    color:#0E7C86; background:rgba(255,255,255,.9);
+    padding:10px 26px; border-radius:999px; white-space:nowrap;
+    box-shadow:0 6px 20px rgba(11,49,95,.22);
+    opacity:0; pointer-events:none;
+    transition: opacity .35s ease, transform .35s ease;
+}
+.praise.show{ opacity:1; transform:translate(-50%, 0); }
+
+#camHint{
+    position:absolute; left:0; right:0; bottom:0; z-index:5; text-align:center;
+    font-size:19px; font-weight:600; color: var(--ink);
+    background:rgba(255,255,255,.8); padding:10px 0;
+}
+#camHint.hide{ display:none; }
+
+.camera-overlay{
+    position:absolute; inset:0; z-index:8; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:14px; text-align:center;
+    padding:26px; background:rgba(11,49,95,.95); color: var(--text-primary);
+}
+.camera-overlay-icon{ font-size:44px; }
+.camera-overlay-text{ font-size:18px; line-height:1.55; max-width:460px; }
+
+.countdown{
+    position:fixed; inset:0; z-index:50; display:flex; align-items:center; justify-content:center;
+    background:rgba(11,49,95,.93);
+}
+.countdown span{
+    font-family: var(--font-display); font-weight:800; font-size:min(30vw, 200px); color: var(--accent);
+    text-shadow:0 0 70px var(--accent-soft);
+}
+
+/* ---------- summary ---------- */
+
+.end-figure{ height:min(27vh, 240px); margin:0 auto; }
+.end-mana{ margin:2px 0; }
+.end-mana-label{
+    font-size:15px; font-weight:600; letter-spacing:4px; text-transform:uppercase;
+    color: var(--text-muted);
+}
+.end-mana-value{
+    font-family: var(--font-display); font-weight:800;
+    font-size:clamp(62px, 10vw, 132px); line-height:1; color: var(--hero);
+    font-variant-numeric: tabular-nums; text-shadow:0 0 60px var(--hero-soft);
+}
+/* The sheep jumps for joy three times and then settles back into
+   breathing, and the score lands with a bump at the end of its count.
+   Confetti alone reads as decoration; the character reacting reads as
+   somebody being pleased for you. */
+#endPage .end-figure{ /* the cheering webp jumps by itself */ }
+@keyframes kori-cheer{
+    0%, 100%{ transform: translateY(0)     rotate(0deg)  scale(1); }
+    28%     { transform: translateY(-26px) rotate(-6deg) scale(1.05); }
+    58%     { transform: translateY(0)     rotate(5deg)  scale(0.98); }
+}
+.end-mana-value{ animation: kori-land 0.5s ease-out 1.7s both; }
+@keyframes kori-land{
+    0%  { transform:scale(1);    text-shadow:0 0 60px var(--hero-soft); }
+    45% { transform:scale(1.14); text-shadow:0 0 110px var(--hero); }
+    100%{ transform:scale(1);    text-shadow:0 0 60px var(--hero-soft); }
+}
+@media (prefers-reduced-motion: reduce){
+    #endPage .end-figure, .end-mana-value{ animation:none; }
+}
+
+.end-best{
+    font-size:17px; font-weight:600; letter-spacing:1px;
+    color: var(--text-muted); margin:2px 0 6px;
+}
+.end-best.is-new{
+    color: var(--accent); font-weight:800; letter-spacing:2px; text-transform:uppercase;
+}
+
+/* Above the background pattern, below the words — a score being read
+   through falling paper is a score nobody reads. */
+.confetti{
+    position:absolute; inset:0; width:100%; height:100%;
+    pointer-events:none; z-index:1;
+}
+#endPage .end-inner{ position:relative; z-index:2; transform: translateY(3.5vh); }
+
+/* ---------- pause ---------- */
+
+.pause-overlay{
+    position:fixed; inset:0; z-index:50;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(11,49,95,0.84);
+    backdrop-filter:blur(4px); cursor:pointer;
+}
+.pause-card{ text-align:center; color:#fff; }
+.pause-icon{ font-size:64px; line-height:1; }
+.pause-title{
+    font-family: var(--font-display); font-weight:800;
+    font-size:clamp(40px, 8vw, 72px); margin-top:8px;
+}
+.pause-sub{ font-size:20px; color:rgba(255,255,255,.8); margin-top:6px; }
+
+/* ---------- fullscreen ---------- */
+
+body.pseudo-fullscreen{ overflow:hidden; }
+body.pseudo-fullscreen .container{ max-width:none; padding:12px; }
+body.pseudo-fullscreen #gamePage{
+    position:fixed; inset:0; z-index:40; overflow:auto; padding:14px;
+    background:
+        radial-gradient(circle at 20% 10%, var(--bg-glow), transparent 48%),
+        radial-gradient(circle at 86% 92%, var(--bg-glow), transparent 44%),
+        var(--bg);
+}
+
+/* ---------- narrow screens ---------- */
+
+/* Narrow windows: the two panels keep their own shapes, but side by side
+   they shrink until neither is any use. Below this they stack, and the row
+   height stops being what limits them. */
+@media (max-width: 900px){
+    .stage{
+        grid-template-columns: min(94vw, calc((100vh - 300px) * var(--panel-aspect)));
+        justify-content:center;
+        gap:14px;
+    }
+    .stage-col{ width:100%; }
+    .panel{ height:auto; width:100%; }
+    .move-head{ min-height:0; }
+    .big-start{ padding:22px 60px; }
+
+    /* the clock was breaking across three lines between the buttons */
+    .top-bar{ flex-wrap:wrap; row-gap:6px; }
+    .clock{ order:3; width:100%; margin-left:0; font-size:20px; }
+    .top-btn{ font-size:15px; padding:9px 14px; }
+    h1{ font-size:clamp(48px, 14vw, 92px); }
+    #moveName{ font-size:clamp(26px, 6.5vw, 38px); }
+    #moveCue{ font-size:clamp(16px, 4vw, 20px); }
+}

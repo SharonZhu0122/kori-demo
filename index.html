@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KORI — Move with Mana</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css?v=20260921-0413">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- ============================================================
+         Home
+         ============================================================ -->
+    <div id="homePage" class="screen">
+
+        <div class="decor" id="homeDecor" aria-hidden="true"></div>
+
+        <div class="home-inner">
+            <h1>KORI</h1>
+            <div class="tagline">Move with Mana</div>
+
+            <img class="home-figure" id="homeFigure" src="assets/kori-wave.webp?v=20260921-0413"
+                 alt="Kori the sheep, waving hello">
+
+            <button class="big-start" onclick="Kori.go('modePage')">Start</button>
+            <br>
+            <button class="btn-quiet" onclick="Kori.go('howToPage')">How to Play</button>
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         How to play
+         ============================================================ -->
+    <div id="howToPage" class="screen" style="display:none;">
+
+        <h2>How to Play</h2>
+
+        <div class="howto-list">
+
+            <div class="howto-step">
+                <div class="howto-num">1</div>
+                <div class="howto-text">
+                    <strong>Stand where the camera sees you</strong>
+                    <p>Head and shoulders is enough. Step back if you can — then your legs count too.</p>
+                </div>
+            </div>
+
+            <div class="howto-step">
+                <div class="howto-num">2</div>
+                <div class="howto-text">
+                    <strong>Copy the figure</strong>
+                    <p>Follow along at your own pace. You do not need to match it exactly.</p>
+                </div>
+            </div>
+
+            <div class="howto-step">
+                <div class="howto-num">3</div>
+                <div class="howto-text">
+                    <strong>Read the words above the guide</strong>
+                    <p>The big words say what the movement is. The sheep on the left shows you how.</p>
+                </div>
+            </div>
+
+            <div class="howto-step">
+                <div class="howto-num">4</div>
+                <div class="howto-text">
+                    <strong>Rest whenever you like</strong>
+                    <p>Sitting down works too. A helper can start it for you at any time.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="center"><button onclick="Kori.go('homePage')">Back</button></div>
+
+    </div>
+
+
+    <!-- ============================================================
+         Choose an activity — a name and a length, nothing more.
+         ============================================================ -->
+    <div id="modePage" class="screen" style="display:none;">
+
+      <div class="mode-inner">
+
+        <h2>Choose an Activity</h2>
+
+        <div class="mode-grid">
+
+            <button class="mode-card" data-mode="rhythm" onclick="Kori.choose('rhythm')">
+                <span class="mode-icon" aria-hidden="true">🎵</span>
+                <span class="mode-name">Rhythm Dance</span>
+                <span class="mode-diff easy" aria-label="Easy">Māmā <span class="lvl" aria-hidden="true"><i class="on"></i><i></i><i></i></span></span>
+                <span class="mode-diff-en">Easy</span>
+            </button>
+
+            <button class="mode-card" data-mode="bollywood" onclick="Kori.choose('bollywood')">
+                <span class="mode-icon" aria-hidden="true">✨</span>
+                <span class="mode-name">Bollywood</span>
+                <span class="mode-diff medium" aria-label="Medium">Waenga <span class="lvl" aria-hidden="true"><i class="on"></i><i class="on"></i><i></i></span></span>
+                <span class="mode-diff-en">Medium</span>
+            </button>
+
+            <button class="mode-card" data-mode="taichi" onclick="Kori.choose('taichi')">
+                <span class="mode-icon" aria-hidden="true">🌿</span>
+                <span class="mode-name">Tai Chi</span>
+                <span class="mode-diff hard" aria-label="Hard">Uaua <span class="lvl" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i></span></span>
+                <span class="mode-diff-en">Hard</span>
+            </button>
+
+        </div>
+
+        <div class="center"><button onclick="Kori.go('homePage')">Back</button></div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         The session. Almost all of the screen is the guide and the
+         player; everything else is a thin strip.
+         ============================================================ -->
+    <div id="gamePage" class="screen" style="display:none;">
+
+        <div class="top-bar">
+            <button class="top-btn" onclick="Kori.quit()">← Back</button>
+            <span class="clock" id="clock">0:00 / 6:00</span>
+            <span class="spacer"></span>
+            <button class="top-btn" id="pauseBtn" onclick="Kori.togglePause()">⏸ Pause</button>
+            <button class="top-btn" id="muteBtn" onclick="Kori.toggleMute()">🔊 Sound</button>
+            <button class="top-btn fullscreen-button" onclick="Kori.toggleFullscreen()">⛶ Full Screen</button>
+        </div>
+
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+        <div class="move-head">
+            <div id="moveName">Commencing</div>
+            <div id="moveCue">Float both hands up to shoulder height</div>
+        </div>
+
+        <!-- Covers the stage while paused. Tapping anywhere on it resumes,
+             so a helper does not have to find the small button again. -->
+        <div id="pauseOverlay" class="pause-overlay" style="display:none;" onclick="Kori.togglePause()">
+            <div class="pause-card">
+                <div class="pause-icon">⏸</div>
+                <div class="pause-title">Paused</div>
+                <div class="pause-sub">Tap anywhere to carry on</div>
+            </div>
+        </div>
+
+        <div class="stage" id="stage">
+
+            <div class="stage-col">
+
+                <div class="panel" id="guidePanel">
+                    <div id="avatarStage" role="img" aria-label="Guide figure demonstrating the movement"></div>
+                    <video id="guideVideo" playsinline></video>
+                </div>
+
+            </div>
+
+            <div class="stage-col">
+
+                <div class="panel" id="camPanel">
+                    <span class="cam-label">You</span>
+                    <div class="cam-frame">
+                        <video id="camera" autoplay playsinline muted></video>
+                        <canvas id="skeleton"></canvas>
+                    </div>
+
+                    <div class="match-pill" id="matchPill">—</div>
+                    <div class="praise" id="praise"></div>
+                    <div id="camHint">Step into view</div>
+
+                    <div id="cameraOverlay" class="camera-overlay" style="display:none;">
+                        <div class="camera-overlay-icon">📷</div>
+                        <div class="camera-overlay-text" id="cameraOverlayText">Camera is off</div>
+                        <button id="retryCameraBtn" onclick="Kori.retryCamera()">Try Again</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         Summary — one big number, counted up from zero.
+         ============================================================ -->
+    <div id="endPage" class="screen" style="display:none;">
+
+        <div class="decor" id="endDecor" aria-hidden="true"></div>
+        <canvas class="confetti" id="endConfetti" aria-hidden="true"></canvas>
+
+        <div class="end-inner">
+            <img class="end-figure" id="endFigure" src="assets/kori-cheer.webp?v=20260921-0413"
+                 alt="Kori the sheep, jumping and cheering">
+
+            <h2 id="endTitle">Well done!</h2>
+
+            <div class="end-best" id="endBest">Best here: 0</div>
+
+            <div class="end-mana">
+                <div class="end-mana-label">Mana</div>
+                <div class="end-mana-value" id="endMana">0</div>
+            </div>
+
+            <button class="big-start" onclick="Kori.again()">Go Again</button>
+            <br>
+            <button class="btn-quiet" onclick="Kori.go('modePage')">Choose Another</button>
+        </div>
+
+    </div>
+
+</div>
+
+<div id="countdown" class="countdown" style="display:none;"><span id="countdownNum">3</span></div>
+
+<!-- MediaPipe is served from the project, not a CDN. A demo on someone
+     else's network cannot depend on jsdelivr being reachable and quick,
+     and this way the whole thing also runs with no internet at all.
+     camera_utils is gone: this build drives the model from its own frame
+     pump and never used it. -->
+<script src="vendor/pose/pose.js?v=20260921-0413"></script>
+<!-- Captures are scripts, not fetched data: fetch() is refused for a
+     page opened from a folder, so a capture delivered as JSON would
+     silently vanish the moment someone double-clicks this file. -->
+<script src="assets/bollywood-mocap.js?v=20260921-0413"></script>
+<script src="assets/taichi-mocap.js?v=20260921-0413"></script>
+<script src="assets/rhythm-mocap.js?v=20260921-0413"></script>
+<script src="choreography.js?v=20260921-0413"></script>
+<script src="posetrack.js?v=20260921-0413"></script>
+<script src="avatar.js?v=20260921-0413"></script>
+<script src="confetti.js?v=20260921-0413"></script>
+<script src="decor.js?v=20260921-0413"></script>
+<script src="audio.js?v=20260921-0413"></script>
+<script src="script.js?v=20260921-0413"></script>
+
+</body>
+</html>
