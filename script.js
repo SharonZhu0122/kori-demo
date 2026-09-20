@@ -11,7 +11,7 @@
 
 (function () {
 
-const BUILD = '20260921-0413';
+const BUILD = '20260921-0427';
 console.log('KORI build ' + BUILD);
 
 const $ = id => document.getElementById(id);
@@ -29,13 +29,13 @@ const fmt = s => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(
 // than the clip being cropped to fit a panel.
 const MODES = {
     rhythm:    { title: 'Rhythm Dance', seconds: 115.66, moves: 'rhythm',
-                 guide: 'video', video: 'assets/rhythm-guide.mp4?v=20260921-0413', aspect: '1/1',
+                 guide: 'video', video: 'assets/rhythm-guide.mp4?v=20260921-0427', aspect: '1/1',
                  mocap: 'rhythm', labels: 'rhythmLabels', sound: 'video' },
     bollywood: { title: 'Bollywood',    seconds: 180.18, moves: 'bollywood',
-                 guide: 'video', video: 'assets/bollywood-guide.mp4?v=20260921-0413', aspect: '1/1',
+                 guide: 'video', video: 'assets/bollywood-guide.mp4?v=20260921-0427', aspect: '1/1',
                  mocap: 'bollywood', labels: 'bollywoodLabels', sound: 'video' },
     taichi:    { title: 'Tai Chi',      seconds: 251.17, moves: 'taiChi',
-                 guide: 'video', video: 'assets/taichi-guide.mp4?v=20260921-0413', aspect: '1/1',
+                 guide: 'video', video: 'assets/taichi-guide.mp4?v=20260921-0427', aspect: '1/1',
                  mocap: 'taichi', labels: 'taiChiLabels', sound: 'video' }
 };
 
