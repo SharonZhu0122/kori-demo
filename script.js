@@ -11,7 +11,7 @@
 
 (function () {
 
-const BUILD = '20261007-2040';
+const BUILD = '20261007-2119';
 console.log('KORI build ' + BUILD);
 
 const $ = id => document.getElementById(id);
@@ -28,17 +28,17 @@ const fmt = s => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(
 // how they were made — the panel takes its shape from the mode rather
 // than the clip being cropped to fit a panel.
 const MODES = {
-    rhythm:    { title: 'Kanikani manawataki', seconds: 115.66, moves: 'rhythm',
-                 guide: 'video', video: 'assets/rhythm-guide.mp4?v=20261007-2040', aspect: '1/1',
+    rhythm:    { title: 'Kanikani manawataki', seconds: 122.41, moves: 'rhythm',
+                 guide: 'video', video: 'assets/rhythm-guide.mp4?v=20261007-2119', aspect: '1/1',
                  mocap: 'rhythm', labels: 'rhythmLabels', sound: 'video' },
     bollywood: { title: 'Kanikani Pariwata', seconds: 180.18, moves: 'bollywood',
-                 guide: 'video', video: 'assets/bollywood-guide.mp4?v=20261007-2040', aspect: '1/1',
+                 guide: 'video', video: 'assets/bollywood-guide.mp4?v=20261007-2119', aspect: '1/1',
                  mocap: 'bollywood', labels: 'bollywoodLabels', sound: 'video' },
     taichi:    { title: 'Mauri Ora',    seconds: 236.61, moves: 'taiChi',
-                 guide: 'video', video: 'assets/taichi-guide.mp4?v=20261007-2040', aspect: '1/1',
+                 guide: 'video', video: 'assets/taichi-guide.mp4?v=20261007-2119', aspect: '1/1',
                  mocap: 'taichi', labels: 'taiChiLabels', sound: 'video' },
     kapahaka:  { title: 'Waiata-ā-ringa', seconds: 120.75, moves: 'taiChi',
-                 guide: 'video', video: 'assets/kapahaka-guide.mp4?v=20261007-2040', aspect: '1/1',
+                 guide: 'video', video: 'assets/kapahaka-guide.mp4?v=20261007-2119', aspect: '1/1',
                  mocap: 'kapahaka', labels: 'kapahakaLabels', sound: 'video' }
 };
 
@@ -223,9 +223,9 @@ async function choose(key) {
         });
     }
 
-    // The speed control is only wired to Bollywood for now.
+    // Speed control (0.5/0.7/1x) for every filmed-guide activity.
     const speedCtl = $('speedCtl');
-    if (speedCtl) speedCtl.style.display = (key === 'bollywood') ? 'inline-flex' : 'none';
+    if (speedCtl) speedCtl.style.display = (cfg.guide === 'video') ? 'inline-flex' : 'none';
 
     KoriSound.unlock();
     S.modeKey = key;
