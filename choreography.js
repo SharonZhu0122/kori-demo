@@ -425,6 +425,14 @@ const bollywoodLabels = [
 ];
 
 
+const kapahakaLabels = [
+{ n:'Waiata-ā-ringa',   dur:30, cue:'Follow the hands — gentle actions with the waiata' },
+{ n:'Hand Actions',     dur:30, cue:'Keep your hands moving with the song' },
+{ n:'With the Rhythm',  dur:31, cue:'Soft and steady — stay with the beat' },
+{ n:'Bringing it Home', dur:30, cue:'Hands flowing to the finish' }
+];
+
+
 const rhythmLabels = [
 { n:'Warm Up',            dur:23, cue:'Copy the sheep — arms opening and lifting' },
 { n:'Finding the Beat',   dur:22, cue:'Steadier now — one arm leads, then the other' },
@@ -602,7 +610,7 @@ window.KoriChoreo = {
 
     raw: { taiChi: taiChi, rhythm: rhythm, bollywood: bollywood,
            taiChiLabels: taiChiLabels, rhythmLabels: rhythmLabels,
-           bollywoodLabels: bollywoodLabels },
+           bollywoodLabels: bollywoodLabels, kapahakaLabels: kapahakaLabels },
     targetAt: targetAt,
     totalDuration: totalDuration,
     STANCES: STANCES,
