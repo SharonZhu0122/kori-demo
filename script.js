@@ -11,7 +11,7 @@
 
 (function () {
 
-const BUILD = '20260929-0055';
+const BUILD = '20261007-1858';
 console.log('KORI build ' + BUILD);
 
 const $ = id => document.getElementById(id);
@@ -28,19 +28,27 @@ const fmt = s => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(
 // how they were made — the panel takes its shape from the mode rather
 // than the clip being cropped to fit a panel.
 const MODES = {
-    rhythm:    { title: 'Rhythm Dance', seconds: 115.66, moves: 'rhythm',
-                 guide: 'video', video: 'assets/rhythm-guide.mp4?v=20260929-0055', aspect: '1/1',
+    rhythm:    { title: 'Kanikani manawataki', seconds: 115.66, moves: 'rhythm',
+                 guide: 'video', video: 'assets/rhythm-guide.mp4?v=20261007-1858', aspect: '1/1',
                  mocap: 'rhythm', labels: 'rhythmLabels', sound: 'video' },
-    bollywood: { title: 'Bollywood',    seconds: 180.18, moves: 'bollywood',
-                 guide: 'video', video: 'assets/bollywood-guide.mp4?v=20260929-0055', aspect: '1/1',
+    bollywood: { title: 'Kanikani Pariwata', seconds: 180.18, moves: 'bollywood',
+                 guide: 'video', video: 'assets/bollywood-guide.mp4?v=20261007-1858', aspect: '1/1',
                  mocap: 'bollywood', labels: 'bollywoodLabels', sound: 'video' },
-    taichi:    { title: 'Tai Chi',      seconds: 251.17, moves: 'taiChi',
-                 guide: 'video', video: 'assets/taichi-guide.mp4?v=20260929-0055', aspect: '1/1',
+    taichi:    { title: 'Mauri Ora',    seconds: 251.17, moves: 'taiChi',
+                 guide: 'video', video: 'assets/taichi-guide.mp4?v=20261007-1858', aspect: '1/1',
                  mocap: 'taichi', labels: 'taiChiLabels', sound: 'video' }
+    // TODO: Kapa haka (Waiata-ā-ringa) — medium (Waenga). The card is in the
+    // grid but disabled until the filmed guide is supplied. To enable: drop the
+    // video at assets/kapahaka-guide.mp4, add the entry below, then remove
+    // `disabled` + the `mode-card-soon`/`mode-soon` bits from its card in
+    // index.html and wire onclick="Kori.choose('kapahaka')".
+    // , kapahaka: { title: 'Waiata-ā-ringa', seconds: <len>, moves: 'kapahaka',
+    //              guide: 'video', video: 'assets/kapahaka-guide.mp4?v=20261007-1858' + BUILD, aspect: '1/1',
+    //              mocap: 'kapahaka', labels: 'kapahakaLabels', sound: 'video' }
 };
 
 
-const PRAISE = ['Ka pai!', 'Tino pai!', 'Beautiful', "That's it", 'Lovely', 'Ka rawe!', 'Perfect'];
+const PRAISE = ['Ka pai!', 'Tino pai!', 'Ka rawe!'];
 
 // The summary title. It never grades: even the lowest band is warm and
 // encouraging (F2 — praise only, never a failing grade). Several phrases
