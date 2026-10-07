@@ -201,7 +201,7 @@ const Tracker = {
 // marking, so "roughly there" should read as success.
 // ------------------------------------------------------------
 
-const WRIST_TOL   = 0.95;   // torso-lengths of error before a wrist scores zero
+const WRIST_TOL   = 1.3;   // torso-lengths of error before a wrist scores zero
 const STANCE_TOL  = 0.55;
 const LEAN_TOL    = 0.9;
 const SINK_TOL    = 0.7;
@@ -213,7 +213,7 @@ function similarity(err, tol) { return clamp(1 - err / tol, 0, 1); }
 // hands out so much partial credit that a player standing perfectly still
 // scored nearly half marks, which made the meter meaningless — the gap
 // between doing nothing and genuinely trying has to be visible.
-function sharpen(x) { return Math.pow(x, 1.6); }
+function sharpen(x) { return Math.pow(x, 1.2); }
 
 // Flowing moves ask the player to move; held moves ask the opposite, and
 // the two are scored as opposites.

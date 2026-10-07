@@ -11,7 +11,7 @@
 
 (function () {
 
-const BUILD = '20261007-2125';
+const BUILD = '20261007-2138';
 console.log('KORI build ' + BUILD);
 
 const $ = id => document.getElementById(id);
@@ -29,16 +29,16 @@ const fmt = s => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(
 // than the clip being cropped to fit a panel.
 const MODES = {
     rhythm:    { title: 'Kanikani manawataki', seconds: 122.41, moves: 'rhythm',
-                 guide: 'video', video: 'assets/rhythm-guide.mp4?v=20261007-2125', aspect: '1/1',
+                 guide: 'video', video: 'assets/rhythm-guide.mp4?v=20261007-2138', aspect: '1/1',
                  mocap: 'rhythm', labels: 'rhythmLabels', sound: 'video' },
     bollywood: { title: 'Kanikani Pariwata', seconds: 180.18, moves: 'bollywood',
-                 guide: 'video', video: 'assets/bollywood-guide.mp4?v=20261007-2125', aspect: '1/1',
+                 guide: 'video', video: 'assets/bollywood-guide.mp4?v=20261007-2138', aspect: '1/1',
                  mocap: 'bollywood', labels: 'bollywoodLabels', sound: 'video' },
     taichi:    { title: 'Mauri Ora',    seconds: 236.61, moves: 'taiChi',
-                 guide: 'video', video: 'assets/taichi-guide.mp4?v=20261007-2125', aspect: '1/1',
+                 guide: 'video', video: 'assets/taichi-guide.mp4?v=20261007-2138', aspect: '1/1',
                  mocap: 'taichi', labels: 'taiChiLabels', sound: 'video' },
     kapahaka:  { title: 'Waiata-ā-ringa', seconds: 120.75, moves: 'taiChi',
-                 guide: 'video', video: 'assets/kapahaka-guide.mp4?v=20261007-2125', aspect: '1/1',
+                 guide: 'video', video: 'assets/kapahaka-guide.mp4?v=20261007-2138', aspect: '1/1',
                  mocap: 'kapahaka', labels: 'kapahakaLabels', sound: 'video' }
 };
 
