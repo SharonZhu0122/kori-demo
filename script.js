@@ -11,7 +11,7 @@
 
 (function () {
 
-const BUILD = '20261007-1858';
+const BUILD = '20261007-1918';
 console.log('KORI build ' + BUILD);
 
 const $ = id => document.getElementById(id);
@@ -29,13 +29,13 @@ const fmt = s => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(
 // than the clip being cropped to fit a panel.
 const MODES = {
     rhythm:    { title: 'Kanikani manawataki', seconds: 115.66, moves: 'rhythm',
-                 guide: 'video', video: 'assets/rhythm-guide.mp4?v=20261007-1858', aspect: '1/1',
+                 guide: 'video', video: 'assets/rhythm-guide.mp4?v=20261007-1918', aspect: '1/1',
                  mocap: 'rhythm', labels: 'rhythmLabels', sound: 'video' },
     bollywood: { title: 'Kanikani Pariwata', seconds: 180.18, moves: 'bollywood',
-                 guide: 'video', video: 'assets/bollywood-guide.mp4?v=20261007-1858', aspect: '1/1',
+                 guide: 'video', video: 'assets/bollywood-guide.mp4?v=20261007-1918', aspect: '1/1',
                  mocap: 'bollywood', labels: 'bollywoodLabels', sound: 'video' },
-    taichi:    { title: 'Mauri Ora',    seconds: 251.17, moves: 'taiChi',
-                 guide: 'video', video: 'assets/taichi-guide.mp4?v=20261007-1858', aspect: '1/1',
+    taichi:    { title: 'Mauri Ora',    seconds: 236.61, moves: 'taiChi',
+                 guide: 'video', video: 'assets/taichi-guide.mp4?v=20261007-1918', aspect: '1/1',
                  mocap: 'taichi', labels: 'taiChiLabels', sound: 'video' }
     // TODO: Kapa haka (Waiata-ā-ringa) — medium (Waenga). The card is in the
     // grid but disabled until the filmed guide is supplied. To enable: drop the
@@ -43,7 +43,7 @@ const MODES = {
     // `disabled` + the `mode-card-soon`/`mode-soon` bits from its card in
     // index.html and wire onclick="Kori.choose('kapahaka')".
     // , kapahaka: { title: 'Waiata-ā-ringa', seconds: <len>, moves: 'kapahaka',
-    //              guide: 'video', video: 'assets/kapahaka-guide.mp4?v=20261007-1858' + BUILD, aspect: '1/1',
+    //              guide: 'video', video: 'assets/kapahaka-guide.mp4?v=20261007-1918' + BUILD, aspect: '1/1',
     //              mocap: 'kapahaka', labels: 'kapahakaLabels', sound: 'video' }
 };
 
